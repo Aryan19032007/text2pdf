@@ -1,893 +1,950 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
-<meta name="theme-color" content="#f5f1e8">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Notes to PDF">
-<title>Notes to PDF</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E📝%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+  <meta name="theme-color" content="#f5f1e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Notes to PDF">
+  <title>Notes to PDF</title>
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E📝%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  :root {
-    --bg: #f5f1e8;
-    --bg-elev: #faf7f0;
-    --surface: #ffffff;
-    --ink: #1c1814;
-    --ink-soft: #5a4f43;
-    --ink-muted: #8a7d6e;
-    --border: #e3ddd0;
-    --border-strong: #c9c0ac;
-    --primary: #0f4c4a;
-    --primary-hover: #0a3a38;
-    --primary-text: #faf7f0;
-    --accent: #b04a2c;
-    --error: #a8321a;
-  }
+    :root {
+      --bg: #f5f1e8;
+      --bg-elev: #faf7f0;
+      --surface: #ffffff;
+      --ink: #1c1814;
+      --ink-soft: #5a4f43;
+      --ink-muted: #8a7d6e;
+      --border: #e3ddd0;
+      --border-strong: #c9c0ac;
+      --primary: #0f4c4a;
+      --primary-hover: #0a3a38;
+      --primary-text: #faf7f0;
+      --accent: #b04a2c;
+      --error: #a8321a;
+    }
 
-  html, body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
-    min-height: 100dvh;
-    overscroll-behavior: none;
-  }
+    html,
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overscroll-behavior: none;
+    }
 
-  body {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  }
+    body {
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
 
-  .container {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 20px 16px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    min-height: 100vh;
-    min-height: 100dvh;
-  }
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 20px 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
 
-  header {
-    padding: 4px 4px 6px;
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-  }
+    header {
+      padding: 4px 4px 6px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
 
-  .title {
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 30px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    color: var(--ink);
-  }
+    .title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 30px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--ink);
+    }
 
-  .title em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--accent);
-  }
+    .title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+    }
 
-  .subtitle {
-    font-size: 12px;
-    color: var(--ink-muted);
-    text-align: right;
-    line-height: 1.3;
-    max-width: 120px;
-  }
+    .subtitle {
+      font-size: 12px;
+      color: var(--ink-muted);
+      text-align: right;
+      line-height: 1.3;
+      max-width: 120px;
+    }
 
-  .editor {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: border-color 0.15s;
-    position: relative;
-  }
+    .editor {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+      position: relative;
+    }
 
-  .editor:focus-within {
-    border-color: var(--border-strong);
-  }
+    .editor:focus-within {
+      border-color: var(--border-strong);
+    }
 
-  textarea {
-    width: 100%;
-    min-height: 45vh;
-    padding: 18px 18px 14px;
-    border: none;
-    background: transparent;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--ink);
-    resize: none;
-    outline: none;
-    display: block;
-  }
+    textarea {
+      width: 100%;
+      min-height: 45vh;
+      padding: 18px 18px 14px;
+      border: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--ink);
+      resize: none;
+      outline: none;
+      display: block;
+    }
 
-  textarea::placeholder {
-    color: var(--ink-muted);
-  }
+    textarea::placeholder {
+      color: var(--ink-muted);
+    }
 
-  .editor-foot {
-    border-top: 1px solid var(--border);
-    padding: 8px 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-    color: var(--ink-muted);
-    background: var(--bg-elev);
-    min-height: 32px;
-  }
+    .editor-foot {
+      border-top: 1px solid var(--border);
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--ink-muted);
+      background: var(--bg-elev);
+      min-height: 32px;
+    }
 
-  .stats span {
-    font-weight: 500;
-    color: var(--ink-soft);
-  }
+    .stats span {
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
 
-  .controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
 
-  .control {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 11px 12px 10px;
-  }
+    .control {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 12px 10px;
+    }
 
-  .control-label {
-    font-size: 10px;
-    color: var(--ink-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 600;
-    margin-bottom: 7px;
-  }
+    .control-label {
+      font-size: 10px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
 
-  .seg {
-    display: flex;
-    background: var(--bg);
-    border-radius: 8px;
-    padding: 3px;
-    gap: 2px;
-  }
+    .seg {
+      display: flex;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+    }
 
-  .seg button {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 7px 4px;
-    font-size: 13px;
-    font-weight: 500;
-    border-radius: 6px;
-    color: var(--ink-muted);
-    cursor: pointer;
-    transition: background 0.12s, color 0.12s;
-    font-family: inherit;
-    -webkit-tap-highlight-color: transparent;
-  }
+    .seg button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 7px 4px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 6px;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+      font-family: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  .seg button.active {
-    background: var(--surface);
-    color: var(--ink);
-    box-shadow: 0 1px 2px rgba(28, 24, 20, 0.06);
-  }
+    .seg button.active {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 1px 2px rgba(28, 24, 20, 0.06);
+    }
 
-  .seg button:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 1px;
-  }
+    .seg button:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 1px;
+    }
 
-  .status {
-    text-align: center;
-    font-size: 13px;
-    height: 18px;
-    line-height: 18px;
-    transition: opacity 0.2s;
-    color: var(--ink-soft);
-  }
+    .status {
+      text-align: center;
+      font-size: 13px;
+      height: 18px;
+      line-height: 18px;
+      transition: opacity 0.2s;
+      color: var(--ink-soft);
+    }
 
-  .status.success { color: var(--primary); font-weight: 500; }
-  .status.error { color: var(--error); font-weight: 500; }
+    .status.success {
+      color: var(--primary);
+      font-weight: 500;
+    }
 
-  .actions {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
-  }
+    .status.error {
+      color: var(--error);
+      font-weight: 500;
+    }
 
-  .btn {
-    border: none;
-    border-radius: 12px;
-    padding: 16px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.12s, transform 0.06s;
-    -webkit-tap-highlight-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
+    .actions {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+    }
 
-  .btn:active { transform: scale(0.985); }
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.12s, transform 0.06s;
+      -webkit-tap-highlight-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
 
-  .btn-primary {
-    background: var(--primary);
-    color: var(--primary-text);
-  }
-  .btn-primary:hover { background: var(--primary-hover); }
-  .btn-primary:disabled { opacity: 0.55; cursor: wait; }
+    .btn:active {
+      transform: scale(0.985);
+    }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--ink-soft);
-    border: 1px solid var(--border-strong);
-  }
-  .btn-secondary:hover { background: var(--bg-elev); }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--primary-text);
+    }
 
-  .icon {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2;
-    flex-shrink: 0;
-  }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
 
-  .footer-note {
-    text-align: center;
-    font-size: 11px;
-    color: var(--ink-muted);
-    padding: 6px 0 2px;
-    line-height: 1.4;
-  }
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
 
-  .footer-note em {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 400;
-  }
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--border-strong);
+    }
 
-  @media (min-width: 720px) {
-    .container { padding: 36px 24px 32px; gap: 16px; }
-    .title { font-size: 36px; }
-    textarea { min-height: 40vh; font-size: 16px; }
-  }
+    .btn-secondary:hover {
+      background: var(--bg-elev);
+    }
 
-  @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; }
-  }
-</style>
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--ink-muted);
+      padding: 6px 0 2px;
+      line-height: 1.4;
+    }
+
+    .footer-note em {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    @media (min-width: 720px) {
+      .container {
+        padding: 36px 24px 32px;
+        gap: 16px;
+      }
+
+      .title {
+        font-size: 36px;
+      }
+
+      textarea {
+        min-height: 40vh;
+        font-size: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="container">
-  <header>
-    <h1 class="title">Notes <em>to</em> PDF</h1>
-    <div class="subtitle">Paste, format, print<br>— without wasting ink</div>
-  </header>
+  <div class="container">
+    <header>
+      <h1 class="title">Notes <em>to</em> PDF</h1>
+      <div class="subtitle">Paste, format, print<br>— without wasting ink</div>
+    </header>
 
-  <div class="editor">
-    <textarea id="input" spellcheck="false" placeholder="Paste your notes here.
-
-Markdown works:
-# Heading 1
-## Heading 2
-### Heading 3
-**bold text**, *italic*
-- bullet points
-1. numbered lists
-
-Try pasting something from ChatGPT and tap Make PDF."></textarea>
-    <div class="editor-foot">
-      <div class="stats" id="stats">Empty</div>
-      <div>A4 · 2 columns</div>
-    </div>
-  </div>
-
-  <div class="controls">
-    <div class="control">
-      <div class="control-label">Density</div>
-      <div class="seg" id="density">
-        <button data-val="compact" class="active">Compact</button>
-        <button data-val="normal">Normal</button>
-        <button data-val="airy">Airy</button>
+    <div class="editor">
+      <textarea id="input" spellcheck="false" placeholder="Paste your markdown text here.
+"></textarea>
+      <div class="editor-foot">
+        <div class="stats" id="stats">Empty</div>
+        <div>A4 · 2 columns</div>
       </div>
     </div>
-    <div class="control">
-      <div class="control-label">Font Size</div>
-      <div class="seg" id="size">
-        <button data-val="9">9pt</button>
-        <button data-val="10" class="active">10pt</button>
-        <button data-val="11">11pt</button>
+
+    <div class="controls">
+      <div class="control">
+        <div class="control-label">Density</div>
+        <div class="seg" id="density">
+          <button data-val="compact" class="active">Compact</button>
+          <button data-val="normal">Normal</button>
+          <button data-val="airy">Airy</button>
+        </div>
+      </div>
+      <div class="control">
+        <div class="control-label">Font Size</div>
+        <div class="seg" id="size">
+          <button data-val="9" class="active">9pt</button>
+          <button data-val="10" >10pt</button>
+          <button data-val="11">11pt</button>
+        </div>
       </div>
     </div>
+
+    <div class="status" id="status"></div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" id="clear" aria-label="Clear text">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+        </svg>
+        Clear
+      </button>
+      <button class="btn btn-primary" id="make">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="12" y1="18" x2="12" y2="12" />
+          <polyline points="9 15 12 12 15 15" />
+        </svg>
+        Make PDF
+      </button>
+    </div>
+
+    <div class="footer-note">Generated locally on your phone — <em>nothing leaves the device</em></div>
   </div>
 
-  <div class="status" id="status"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const $ = (id) => document.getElementById(id);
+      const input = $('input');
+      const stats = $('stats');
+      const status = $('status');
+      const makeBtn = $('make');
+      const clearBtn = $('clear');
+
+      // ============ State + persistence ============
+      let settings = { density: 'compact', size: 9 };
+      const STORE_KEY = 'notes2pdf_v1';
 
-  <div class="actions">
-    <button class="btn btn-secondary" id="clear" aria-label="Clear text">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-      Clear
-    </button>
-    <button class="btn btn-primary" id="make">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
-      Make PDF
-    </button>
-  </div>
-
-  <div class="footer-note">Generated locally on your phone — <em>nothing leaves the device</em></div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-(function() {
-  'use strict';
-
-  const $ = (id) => document.getElementById(id);
-  const input = $('input');
-  const stats = $('stats');
-  const status = $('status');
-  const makeBtn = $('make');
-  const clearBtn = $('clear');
-
-  // ============ State + persistence ============
-  let settings = { density: 'compact', size: 10 };
-  const STORE_KEY = 'notes2pdf_v1';
-
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
-    if (typeof saved.text === 'string') input.value = saved.text;
-    if (saved.settings) settings = Object.assign(settings, saved.settings);
-  } catch (e) {}
-
-  let saveTimer;
-  const save = () => {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify({
-        text: input.value,
-        settings: settings
-      }));
-    } catch (e) {}
-  };
-
-  // ============ Segmented controls ============
-  function initSeg(id, key, parse = v => v) {
-    const wrap = $(id);
-    const update = (val) => {
-      wrap.querySelectorAll('button').forEach(b => {
-        b.classList.toggle('active', b.dataset.val === String(val));
-      });
-    };
-    update(settings[key]);
-    wrap.addEventListener('click', (e) => {
-      const btn = e.target.closest('button');
-      if (!btn) return;
-      settings[key] = parse(btn.dataset.val);
-      update(btn.dataset.val);
-      save();
-    });
-  }
-  initSeg('density', 'density');
-  initSeg('size', 'size', v => parseInt(v, 10));
-
-  // ============ Live stats ============
-  function updateStats() {
-    const text = input.value;
-    if (!text.trim()) { stats.textContent = 'Empty'; return; }
-    const blocks = parseMarkdown(text);
-    let h = 0, items = 0, paras = 0, tables = 0;
-    blocks.forEach(b => {
-      if (b.type === 'h1' || b.type === 'h2' || b.type === 'h3') h++;
-      else if (b.type === 'ul' || b.type === 'ol') items += b.items.length;
-      else if (b.type === 'p') paras++;
-      else if (b.type === 'table') tables++;
-    });
-    const parts = [];
-    if (h) parts.push(`<span>${h}</span> heading${h > 1 ? 's' : ''}`);
-    if (paras) parts.push(`<span>${paras}</span> paragraph${paras > 1 ? 's' : ''}`);
-    if (items) parts.push(`<span>${items}</span> list item${items > 1 ? 's' : ''}`);
-    if (tables) parts.push(`<span>${tables}</span> table${tables > 1 ? 's' : ''}`);
-    stats.innerHTML = parts.length ? 'Detected: ' + parts.join(' · ') : 'Ready';
-  }
-
-  input.addEventListener('input', () => {
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(save, 400);
-    updateStats();
-  });
-
-  clearBtn.addEventListener('click', () => {
-    if (input.value && !confirm('Clear the text? This cannot be undone.')) return;
-    input.value = '';
-    save();
-    updateStats();
-    input.focus();
-    showStatus('Cleared', 'success', 1500);
-  });
-
-  // ============ Markdown parser ============
-  function parseMarkdown(text) {
-    const lines = text.split('\n');
-    const blocks = [];
-    let para = [];
-    let list = null;
-    let inCode = false;
-    let table = null;
-
-    const flushPara = () => {
-      if (para.length) { blocks.push({ type: 'p', text: para.join(' ') }); para = []; }
-    };
-    const flushList = () => {
-      if (list) { blocks.push(list); list = null; }
-    };
-    const flushTable = () => {
-      if (table) { blocks.push(table); table = null; }
-    };
-
-    // Markdown table helpers
-    const isTableRow = (l) => l.startsWith('|') && l.endsWith('|') && (l.match(/\|/g) || []).length >= 2;
-    const isTableSep = (l) => /^\|[\s|:\-]+\|$/.test(l) && l.includes('-');
-    const parseCells = (l) => l.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
-
-    for (const raw of lines) {
-      // Code block fence - just strip, render contents as paragraphs for now
-      if (raw.trim().startsWith('```')) {
-        flushPara(); flushList(); flushTable();
-        inCode = !inCode;
-        continue;
-      }
-
-      const line = raw.trim();
-
-      if (inCode) {
-        // Inside code block: each non-empty line becomes its own block
-        if (line) blocks.push({ type: 'code', text: raw });
-        continue;
-      }
-
-      if (!line) { flushPara(); flushList(); flushTable(); continue; }
-
-      // Table row?
-      if (isTableRow(line)) {
-        flushPara(); flushList();
-        if (!table) table = { type: 'table', headers: null, rows: [] };
-        if (isTableSep(line)) {
-          // Most recently pushed row becomes the header
-          if (table.rows.length > 0 && !table.headers) {
-            table.headers = table.rows.pop();
-          }
-        } else {
-          table.rows.push(parseCells(line));
-        }
-        continue;
-      }
-
-      // Any other non-table content ends an open table
-      flushTable();
-
-      if (line.startsWith('### ')) {
-        flushPara(); flushList();
-        blocks.push({ type: 'h3', text: line.slice(4) });
-      } else if (line.startsWith('## ')) {
-        flushPara(); flushList();
-        blocks.push({ type: 'h2', text: line.slice(3) });
-      } else if (line.startsWith('# ')) {
-        flushPara(); flushList();
-        blocks.push({ type: 'h1', text: line.slice(2) });
-      } else if (/^[-*+]\s/.test(line)) {
-        flushPara();
-        if (!list || list.type !== 'ul') { flushList(); list = { type: 'ul', items: [] }; }
-        list.items.push(line.replace(/^[-*+]\s+/, ''));
-      } else if (/^\d+\.\s/.test(line)) {
-        flushPara();
-        if (!list || list.type !== 'ol') { flushList(); list = { type: 'ol', items: [] }; }
-        list.items.push(line.replace(/^\d+\.\s+/, ''));
-      } else if (line === '---' || line === '***' || line === '___') {
-        flushPara(); flushList();
-        blocks.push({ type: 'hr' });
-      } else {
-        flushList();
-        para.push(line);
-      }
-    }
-    flushPara(); flushList(); flushTable();
-    return blocks;
-  }
-
-  // Parse inline **bold** and *italic*. Also strips inline backticks.
-  function inlineTokens(text) {
-    // Strip inline code backticks but preserve content
-    text = text.replace(/`([^`]+)`/g, '$1');
-
-    const tokens = [];
-    let i = 0;
-    let buf = '';
-
-    const pushBuf = () => {
-      if (buf) { tokens.push({ text: buf, bold: false, italic: false }); buf = ''; }
-    };
-
-    while (i < text.length) {
-      // **bold**
-      if (text[i] === '*' && text[i + 1] === '*') {
-        const end = text.indexOf('**', i + 2);
-        if (end !== -1) {
-          pushBuf();
-          tokens.push({ text: text.slice(i + 2, end), bold: true, italic: false });
-          i = end + 2;
-          continue;
-        }
-      }
-      // *italic* (single, not **)
-      if (text[i] === '*' && text[i + 1] !== '*') {
-        // Find a single * that's not followed/preceded by another *
-        let end = -1;
-        for (let j = i + 1; j < text.length; j++) {
-          if (text[j] === '*' && text[j + 1] !== '*' && text[j - 1] !== '*') { end = j; break; }
-        }
-        if (end !== -1) {
-          pushBuf();
-          tokens.push({ text: text.slice(i + 1, end), bold: false, italic: true });
-          i = end + 1;
-          continue;
-        }
-      }
-      buf += text[i];
-      i++;
-    }
-    pushBuf();
-    return tokens;
-  }
-
-  function tokenizeWords(text, baseBold) {
-    const tokens = inlineTokens(text);
-    const words = [];
-    for (const t of tokens) {
-      const parts = t.text.split(/(\s+)/);
-      for (const p of parts) {
-        if (!p) continue;
-        if (/^\s+$/.test(p)) {
-          if (words.length) words[words.length - 1].space = ' ';
-        } else {
-          words.push({
-            text: p,
-            bold: !!(baseBold || t.bold),
-            italic: !!t.italic,
-            space: ''
-          });
-        }
-      }
-    }
-    return words;
-  }
-
-  function fontStyle(w) {
-    if (w.bold && w.italic) return 'bolditalic';
-    if (w.bold) return 'bold';
-    if (w.italic) return 'italic';
-    return 'normal';
-  }
-
-  // ============ PDF generation with 2-column flow ============
-  function generatePDF() {
-    const text = input.value;
-    if (!text.trim()) {
-      showStatus('Paste some text first', 'error');
-      return;
-    }
-
-    const blocks = parseMarkdown(text);
-    if (blocks.length === 0) {
-      showStatus('Nothing to format', 'error');
-      return;
-    }
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
-
-    const pageW = doc.internal.pageSize.getWidth();
-    const pageH = doc.internal.pageSize.getHeight();
-
-    // Density presets — compact is the default since the whole point is ink saving
-    const densityMap = {
-      compact: { margin: 26, lineHeight: 1.18, gap: 1.5, colGap: 14 },
-      normal:  { margin: 36, lineHeight: 1.32, gap: 3.0, colGap: 18 },
-      airy:    { margin: 48, lineHeight: 1.48, gap: 5.0, colGap: 22 }
-    };
-    const D = densityMap[settings.density];
-    const size = settings.size;
-
-    const colW = (pageW - 2 * D.margin - D.colGap) / 2;
-    const colTop = D.margin;
-    const colBot = pageH - D.margin;
-
-    // Type scale
-    const fs = {
-      h1: size + 5,
-      h2: size + 2.5,
-      h3: size + 1,
-      p:  size,
-      li: size,
-      code: size - 0.5
-    };
-
-    // Top/bottom margins per block type (multiples of gap)
-    const tm = { h1: D.gap * 4, h2: D.gap * 3, h3: D.gap * 2, p: D.gap, li: D.gap * 0.4, ul: D.gap, ol: D.gap, hr: D.gap * 2, code: D.gap };
-    const bm = { h1: D.gap * 1.2, h2: D.gap * 0.8, h3: D.gap * 0.6, p: D.gap, li: D.gap * 0.4, ul: D.gap, ol: D.gap, hr: D.gap * 2, code: D.gap };
-
-    // Cursor state
-    let col = 0;
-    let x = D.margin;
-    let y = colTop;
-    let atColTop = true;
-
-    const newColumn = () => {
-      col++;
-      if (col > 1) { doc.addPage(); col = 0; }
-      x = D.margin + col * (colW + D.colGap);
-      y = colTop;
-      atColTop = true;
-    };
-
-    const ensureSpace = (h) => {
-      if (y + h > colBot) newColumn();
-    };
-
-    // Render a stretch of rich text (with inline bold/italic), word-wrapped to availW.
-    // Optional firstLinePrefix draws a bullet/number on line 1 only.
-    function drawRichText(text, fontSize, baseBold, indent, firstLinePrefix) {
-      indent = indent || 0;
-      const words = tokenizeWords(text, baseBold);
-      const lineH = fontSize * D.lineHeight;
-      const availW = colW - indent;
-
-      let line = [];
-      let lineWidth = 0;
-      let isFirstLine = true;
-
-      const measure = (w) => {
-        doc.setFont('helvetica', fontStyle(w));
-        doc.setFontSize(fontSize);
-        return {
-          word: doc.getTextWidth(w.text),
-          space: w.space ? doc.getTextWidth(' ') : 0
-        };
-      };
-
-      const flushLine = () => {
-        ensureSpace(lineH);
-        const baseline = y + fontSize * 0.82;
-
-        if (isFirstLine && firstLinePrefix) {
-          doc.setFont('helvetica', firstLinePrefix.bold ? 'bold' : 'normal');
-          doc.setFontSize(fontSize);
-          doc.setTextColor(28, 24, 20);
-          doc.text(firstLinePrefix.text, x + firstLinePrefix.x, baseline);
-        }
-
-        let cx = x + indent;
-        for (const w of line) {
-          doc.setFont('helvetica', fontStyle(w));
-          doc.setFontSize(fontSize);
-          doc.setTextColor(28, 24, 20);
-          if (w.text) doc.text(w.text, cx, baseline);
-          cx += doc.getTextWidth(w.text);
-          if (w.space) cx += doc.getTextWidth(' ');
-        }
-        y += lineH;
-        atColTop = false;
-        line = [];
-        lineWidth = 0;
-        isFirstLine = false;
-      };
-
-      for (const word of words) {
-        const m = measure(word);
-        // Wrapping check uses word width only (trailing space won't count at line end)
-        if (line.length > 0 && lineWidth + m.word > availW) {
-          // Strip trailing space from last word in finished line
-          if (line.length) line[line.length - 1].space = '';
-          flushLine();
-        }
-        line.push(Object.assign({}, word));
-        lineWidth += m.word + m.space;
-      }
-      if (line.length) {
-        // Strip trailing space on the final line too
-        if (line[line.length - 1]) line[line.length - 1].space = '';
-        flushLine();
-      }
-    }
-
-    function drawHR() {
-      if (!atColTop) y += tm.hr;
-      ensureSpace(4);
-      doc.setDrawColor(180, 175, 165);
-      doc.setLineWidth(0.5);
-      doc.line(x, y + 2, x + colW, y + 2);
-      y += 4 + bm.hr;
-      atColTop = false;
-    }
-
-    function drawBlock(b) {
-      if (b.type === 'hr') return drawHR();
-
-      const size = fs[b.type] || fs.p;
-      if (!atColTop) y += tm[b.type] || 0;
-
-      if (b.type === 'h1' || b.type === 'h2' || b.type === 'h3') {
-        drawRichText(b.text, size, true);
-      } else if (b.type === 'p') {
-        drawRichText(b.text, size, false);
-      } else if (b.type === 'ul' || b.type === 'ol') {
-        // Items handled below via outer loop
-      } else if (b.type === 'code') {
-        // monospace, slightly smaller — single line, no wrap (truncate if needed)
-        const lineH = size * D.lineHeight;
-        ensureSpace(lineH);
-        doc.setFont('courier', 'normal');
-        doc.setFontSize(size);
-        doc.setTextColor(60, 50, 40);
-        // Truncate to column width
-        let line = b.text;
-        while (doc.getTextWidth(line) > colW && line.length > 1) line = line.slice(0, -1);
-        doc.text(line, x, y + size * 0.82);
-        y += lineH;
-        atColTop = false;
-      }
-
-      y += bm[b.type] || 0;
-    }
-
-    function drawList(b) {
-      const indent = 11;
-      const size = fs.li;
-      b.items.forEach((item, idx) => {
-        if (!atColTop) y += (idx === 0 ? tm.ul : tm.li);
-        const prefix = b.type === 'ul' ? '•' : `${idx + 1}.`;
-        // For ol with 2-digit numbers, give a tiny bit more space
-        const offset = b.type === 'ol' && idx >= 9 ? 0 : 2;
-        drawRichText(item, size, false, indent, { text: prefix, x: offset, bold: false });
-      });
-      y += bm.ul;
-    }
-
-    function drawTable(b) {
-      const allRows = [];
-      if (b.headers && b.headers.length) allRows.push({ cells: b.headers, header: true });
-      b.rows.forEach(r => allRows.push({ cells: r, header: false }));
-      if (!allRows.length) return;
-
-      const numCols = Math.max(...allRows.map(r => r.cells.length), 1);
-      const cellW = colW / numCols;
-      const tSize = Math.max(fs.p - 0.5, 8);
-      const padX = 4;
-      const padY = 3;
-      const lineH = tSize * 1.2;
-      const cellInnerW = cellW - 2 * padX;
-
-      if (!atColTop) y += tm.p;
-
-      for (const row of allRows) {
-        doc.setFontSize(tSize);
-        doc.setFont('helvetica', row.header ? 'bold' : 'normal');
-        // Strip inline ** markers since cell text isn't run through rich-text renderer
-        const wrapped = [];
-        for (let i = 0; i < numCols; i++) {
-          const cellText = (row.cells[i] || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1');
-          wrapped.push(doc.splitTextToSize(cellText, cellInnerW));
-        }
-        const maxLines = Math.max(1, ...wrapped.map(w => w.length));
-        const rowH = maxLines * lineH + 2 * padY;
-
-        ensureSpace(rowH);
-
-        // Header gets a subtle fill
-        if (row.header) {
-          doc.setFillColor(245, 240, 230);
-          doc.rect(x, y, colW, rowH, 'F');
-        }
-
-        // Borders: outer + vertical separators
-        doc.setDrawColor(170, 165, 155);
-        doc.setLineWidth(0.4);
-        doc.rect(x, y, colW, rowH);
-        for (let i = 1; i < numCols; i++) {
-          const sx = x + i * cellW;
-          doc.line(sx, y, sx, y + rowH);
-        }
-
-        // Cell text
-        for (let i = 0; i < numCols; i++) {
-          const cellX = x + i * cellW;
-          doc.setFont('helvetica', row.header ? 'bold' : 'normal');
-          doc.setFontSize(tSize);
-          doc.setTextColor(28, 24, 20);
-          (wrapped[i] || []).forEach((line, li) => {
-            const lineY = y + padY + (li * lineH) + tSize * 0.8;
-            doc.text(line, cellX + padX, lineY);
-          });
-        }
-
-        y += rowH;
-        atColTop = false;
-      }
-
-      y += bm.p;
-    }
-
-    // Render all blocks
-    for (const b of blocks) {
-      if (b.type === 'ul' || b.type === 'ol') drawList(b);
-      else if (b.type === 'table') drawTable(b);
-      else drawBlock(b);
-    }
-
-    // Output: doc.save() handles both Android (download) and iOS (open in new tab)
-    const stamp = new Date().toISOString().slice(0, 10);
-    const filename = `notes-${stamp}.pdf`;
-    doc.save(filename);
-
-    showStatus(`Saved as ${filename}`, 'success');
-  }
-
-  function showStatus(msg, kind, duration) {
-    duration = duration || 4500;
-    status.textContent = msg;
-    status.className = 'status ' + (kind || '');
-    clearTimeout(showStatus._t);
-    showStatus._t = setTimeout(() => {
-      status.textContent = '';
-      status.className = 'status';
-    }, duration);
-  }
-
-  makeBtn.addEventListener('click', () => {
-    makeBtn.disabled = true;
-    makeBtn.textContent = 'Generating...';
-    // Defer slightly so the disabled state paints before sync PDF work
-    setTimeout(() => {
       try {
-        generatePDF();
-      } catch (err) {
-        console.error(err);
-        showStatus('Error: ' + (err.message || 'something went wrong'), 'error');
-      } finally {
-        makeBtn.disabled = false;
-        // Rebuild button content
-        makeBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg> Make PDF';
+        const saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+        if (typeof saved.text === 'string') input.value = saved.text;
+        if (saved.settings) settings = Object.assign(settings, saved.settings);
+      } catch (e) { }
+
+      let saveTimer;
+      const save = () => {
+        try {
+          localStorage.setItem(STORE_KEY, JSON.stringify({
+            text: input.value,
+            settings: settings
+          }));
+        } catch (e) { }
+      };
+
+      // ============ Segmented controls ============
+      function initSeg(id, key, parse = v => v) {
+        const wrap = $(id);
+        const update = (val) => {
+          wrap.querySelectorAll('button').forEach(b => {
+            b.classList.toggle('active', b.dataset.val === String(val));
+          });
+        };
+        update(settings[key]);
+        wrap.addEventListener('click', (e) => {
+          const btn = e.target.closest('button');
+          if (!btn) return;
+          settings[key] = parse(btn.dataset.val);
+          update(btn.dataset.val);
+          save();
+        });
       }
-    }, 30);
-  });
+      initSeg('density', 'density');
+      initSeg('size', 'size', v => parseInt(v, 10));
 
-  // Initial stats
-  updateStats();
+      // ============ Live stats ============
+      function updateStats() {
+        const text = input.value;
+        if (!text.trim()) { stats.textContent = 'Empty'; return; }
+        const blocks = parseMarkdown(text);
+        let h = 0, items = 0, paras = 0, tables = 0;
+        blocks.forEach(b => {
+          if (b.type === 'h1' || b.type === 'h2' || b.type === 'h3') h++;
+          else if (b.type === 'ul' || b.type === 'ol') items += b.items.length;
+          else if (b.type === 'p') paras++;
+          else if (b.type === 'table') tables++;
+        });
+        const parts = [];
+        if (h) parts.push(`<span>${h}</span> heading${h > 1 ? 's' : ''}`);
+        if (paras) parts.push(`<span>${paras}</span> paragraph${paras > 1 ? 's' : ''}`);
+        if (items) parts.push(`<span>${items}</span> list item${items > 1 ? 's' : ''}`);
+        if (tables) parts.push(`<span>${tables}</span> table${tables > 1 ? 's' : ''}`);
+        stats.innerHTML = parts.length ? 'Detected: ' + parts.join(' · ') : 'Ready';
+      }
 
-  // Allow Cmd/Ctrl+Enter to generate
-  input.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-      e.preventDefault();
-      makeBtn.click();
-    }
-  });
-})();
-</script>
+      input.addEventListener('input', () => {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(save, 400);
+        updateStats();
+      });
+
+      clearBtn.addEventListener('click', () => {
+        if (input.value && !confirm('Clear the text? This cannot be undone.')) return;
+        input.value = '';
+        save();
+        updateStats();
+        input.focus();
+        showStatus('Cleared', 'success', 1500);
+      });
+
+      // ============ Markdown parser ============
+      function parseMarkdown(text) {
+        const lines = text.split('\n');
+        const blocks = [];
+        let para = [];
+        let list = null;
+        let inCode = false;
+        let table = null;
+
+        const flushPara = () => {
+          if (para.length) { blocks.push({ type: 'p', text: para.join(' ') }); para = []; }
+        };
+        const flushList = () => {
+          if (list) { blocks.push(list); list = null; }
+        };
+        const flushTable = () => {
+          if (table) { blocks.push(table); table = null; }
+        };
+
+        // Markdown table helpers
+        const isTableRow = (l) => l.startsWith('|') && l.endsWith('|') && (l.match(/\|/g) || []).length >= 2;
+        const isTableSep = (l) => /^\|[\s|:\-]+\|$/.test(l) && l.includes('-');
+        const parseCells = (l) => l.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
+
+        for (const raw of lines) {
+          // Code block fence - just strip, render contents as paragraphs for now
+          if (raw.trim().startsWith('```')) {
+            flushPara(); flushList(); flushTable();
+            inCode = !inCode;
+            continue;
+          }
+
+          const line = raw.trim();
+
+          if (inCode) {
+            // Inside code block: each non-empty line becomes its own block
+            if (line) blocks.push({ type: 'code', text: raw });
+            continue;
+          }
+
+          if (!line) { flushPara(); flushList(); flushTable(); continue; }
+
+          // Table row?
+          if (isTableRow(line)) {
+            flushPara(); flushList();
+            if (!table) table = { type: 'table', headers: null, rows: [] };
+            if (isTableSep(line)) {
+              // Most recently pushed row becomes the header
+              if (table.rows.length > 0 && !table.headers) {
+                table.headers = table.rows.pop();
+              }
+            } else {
+              table.rows.push(parseCells(line));
+            }
+            continue;
+          }
+
+          // Any other non-table content ends an open table
+          flushTable();
+
+          if (line.startsWith('### ')) {
+            flushPara(); flushList();
+            blocks.push({ type: 'h3', text: line.slice(4) });
+          } else if (line.startsWith('## ')) {
+            flushPara(); flushList();
+            blocks.push({ type: 'h2', text: line.slice(3) });
+          } else if (line.startsWith('# ')) {
+            flushPara(); flushList();
+            blocks.push({ type: 'h1', text: line.slice(2) });
+          } else if (/^[-*+]\s/.test(line)) {
+            flushPara();
+            if (!list || list.type !== 'ul') { flushList(); list = { type: 'ul', items: [] }; }
+            list.items.push(line.replace(/^[-*+]\s+/, ''));
+          } else if (/^\d+\.\s/.test(line)) {
+            flushPara();
+            if (!list || list.type !== 'ol') { flushList(); list = { type: 'ol', items: [] }; }
+            list.items.push(line.replace(/^\d+\.\s+/, ''));
+          } else if (line === '---' || line === '***' || line === '___') {
+            flushPara(); flushList();
+            blocks.push({ type: 'hr' });
+          } else {
+            flushList();
+            para.push(line);
+          }
+        }
+        flushPara(); flushList(); flushTable();
+        return blocks;
+      }
+
+      // Parse inline **bold** and *italic*. Also strips inline backticks.
+      function inlineTokens(text) {
+        // Strip inline code backticks but preserve content
+        text = text.replace(/`([^`]+)`/g, '$1');
+
+        const tokens = [];
+        let i = 0;
+        let buf = '';
+
+        const pushBuf = () => {
+          if (buf) { tokens.push({ text: buf, bold: false, italic: false }); buf = ''; }
+        };
+
+        while (i < text.length) {
+          // **bold**
+          if (text[i] === '*' && text[i + 1] === '*') {
+            const end = text.indexOf('**', i + 2);
+            if (end !== -1) {
+              pushBuf();
+              tokens.push({ text: text.slice(i + 2, end), bold: true, italic: false });
+              i = end + 2;
+              continue;
+            }
+          }
+          // *italic* (single, not **)
+          if (text[i] === '*' && text[i + 1] !== '*') {
+            // Find a single * that's not followed/preceded by another *
+            let end = -1;
+            for (let j = i + 1; j < text.length; j++) {
+              if (text[j] === '*' && text[j + 1] !== '*' && text[j - 1] !== '*') { end = j; break; }
+            }
+            if (end !== -1) {
+              pushBuf();
+              tokens.push({ text: text.slice(i + 1, end), bold: false, italic: true });
+              i = end + 1;
+              continue;
+            }
+          }
+          buf += text[i];
+          i++;
+        }
+        pushBuf();
+        return tokens;
+      }
+
+      function tokenizeWords(text, baseBold) {
+        const tokens = inlineTokens(text);
+        const words = [];
+        for (const t of tokens) {
+          const parts = t.text.split(/(\s+)/);
+          for (const p of parts) {
+            if (!p) continue;
+            if (/^\s+$/.test(p)) {
+              if (words.length) words[words.length - 1].space = ' ';
+            } else {
+              words.push({
+                text: p,
+                bold: !!(baseBold || t.bold),
+                italic: !!t.italic,
+                space: ''
+              });
+            }
+          }
+        }
+        return words;
+      }
+
+      function fontStyle(w) {
+        if (w.bold && w.italic) return 'bolditalic';
+        if (w.bold) return 'bold';
+        if (w.italic) return 'italic';
+        return 'normal';
+      }
+
+      // ============ PDF generation with 2-column flow ============
+      function generatePDF() {
+        const text = input.value;
+        if (!text.trim()) {
+          showStatus('Paste some text first', 'error');
+          return;
+        }
+
+        const blocks = parseMarkdown(text);
+        if (blocks.length === 0) {
+          showStatus('Nothing to format', 'error');
+          return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
+
+        const pageW = doc.internal.pageSize.getWidth();
+        const pageH = doc.internal.pageSize.getHeight();
+
+        // Density presets — compact is the default since the whole point is ink saving
+        const densityMap = {
+          compact: { margin: 26, lineHeight: 1.18, gap: 1.5, colGap: 14 },
+          normal: { margin: 36, lineHeight: 1.32, gap: 3.0, colGap: 18 },
+          airy: { margin: 48, lineHeight: 1.48, gap: 5.0, colGap: 22 }
+        };
+        const D = densityMap[settings.density];
+        const size = settings.size;
+
+        const colW = (pageW - 2 * D.margin - D.colGap) / 2;
+        const colTop = D.margin;
+        const colBot = pageH - D.margin;
+
+        // Draw vertical separator line between columns
+        function drawColumnDivider() {
+          const dividerX = D.margin + colW + (D.colGap / 2);
+
+          doc.setDrawColor(190, 185, 175);
+          doc.setLineWidth(0.4);
+
+          doc.line(dividerX, colTop, dividerX, colBot);
+        }
+
+        // Draw on first page
+        drawColumnDivider();
+
+        // Type scale
+        const fs = {
+          h1: size + 5,
+          h2: size + 2.5,
+          h3: size + 1,
+          p: size,
+          li: size,
+          code: size - 0.5
+        };
+
+        // Top/bottom margins per block type (multiples of gap)
+        const tm = { h1: D.gap * 4, h2: D.gap * 3, h3: D.gap * 2, p: D.gap, li: D.gap * 0.4, ul: D.gap, ol: D.gap, hr: D.gap * 2, code: D.gap };
+        const bm = { h1: D.gap * 1.2, h2: D.gap * 0.8, h3: D.gap * 0.6, p: D.gap, li: D.gap * 0.4, ul: D.gap, ol: D.gap, hr: D.gap * 2, code: D.gap };
+
+        // Cursor state
+        let col = 0;
+        let x = D.margin;
+        let y = colTop;
+        let atColTop = true;
+
+        const newColumn = () => {
+          col++;
+          if (col > 1) { doc.addPage(); col = 0; drawColumnDivider();  }
+          x = D.margin + col * (colW + D.colGap);
+          y = colTop;
+          atColTop = true;
+        };
+
+        const ensureSpace = (h) => {
+          if (y + h > colBot) newColumn();
+        };
+
+        // Render a stretch of rich text (with inline bold/italic), word-wrapped to availW.
+        // Optional firstLinePrefix draws a bullet/number on line 1 only.
+        function drawRichText(text, fontSize, baseBold, indent, firstLinePrefix) {
+          indent = indent || 0;
+          const words = tokenizeWords(text, baseBold);
+          const lineH = fontSize * D.lineHeight;
+          const availW = colW - indent;
+
+          let line = [];
+          let lineWidth = 0;
+          let isFirstLine = true;
+
+          const measure = (w) => {
+            doc.setFont('helvetica', fontStyle(w));
+            doc.setFontSize(fontSize);
+            return {
+              word: doc.getTextWidth(w.text),
+              space: w.space ? doc.getTextWidth(' ') : 0
+            };
+          };
+
+          const flushLine = () => {
+            ensureSpace(lineH);
+            const baseline = y + fontSize * 0.82;
+
+            if (isFirstLine && firstLinePrefix) {
+              doc.setFont('helvetica', firstLinePrefix.bold ? 'bold' : 'normal');
+              doc.setFontSize(fontSize);
+              doc.setTextColor(28, 24, 20);
+              doc.text(firstLinePrefix.text, x + firstLinePrefix.x, baseline);
+            }
+
+            let cx = x + indent;
+            for (const w of line) {
+              doc.setFont('helvetica', fontStyle(w));
+              doc.setFontSize(fontSize);
+              doc.setTextColor(28, 24, 20);
+              if (w.text) doc.text(w.text, cx, baseline);
+              cx += doc.getTextWidth(w.text);
+              if (w.space) cx += doc.getTextWidth(' ');
+            }
+            y += lineH;
+            atColTop = false;
+            line = [];
+            lineWidth = 0;
+            isFirstLine = false;
+          };
+
+          for (const word of words) {
+            const m = measure(word);
+            // Wrapping check uses word width only (trailing space won't count at line end)
+            if (line.length > 0 && lineWidth + m.word > availW) {
+              // Strip trailing space from last word in finished line
+              if (line.length) line[line.length - 1].space = '';
+              flushLine();
+            }
+            line.push(Object.assign({}, word));
+            lineWidth += m.word + m.space;
+          }
+          if (line.length) {
+            // Strip trailing space on the final line too
+            if (line[line.length - 1]) line[line.length - 1].space = '';
+            flushLine();
+          }
+        }
+
+        function drawHR() {
+          if (!atColTop) y += tm.hr;
+          ensureSpace(4);
+          doc.setDrawColor(180, 175, 165);
+          doc.setLineWidth(0.5);
+          doc.line(x, y + 2, x + colW, y + 2);
+          y += 4 + bm.hr;
+          atColTop = false;
+        }
+
+        function drawBlock(b) {
+          if (b.type === 'hr') return drawHR();
+
+          const size = fs[b.type] || fs.p;
+          if (!atColTop) y += tm[b.type] || 0;
+
+          if (b.type === 'h1' || b.type === 'h2' || b.type === 'h3') {
+            drawRichText(b.text, size, true);
+          } else if (b.type === 'p') {
+            drawRichText(b.text, size, false);
+          } else if (b.type === 'ul' || b.type === 'ol') {
+            // Items handled below via outer loop
+          } else if (b.type === 'code') {
+            // monospace, slightly smaller — single line, no wrap (truncate if needed)
+            const lineH = size * D.lineHeight;
+            ensureSpace(lineH);
+            doc.setFont('courier', 'normal');
+            doc.setFontSize(size);
+            doc.setTextColor(60, 50, 40);
+            // Truncate to column width
+            let line = b.text;
+            while (doc.getTextWidth(line) > colW && line.length > 1) line = line.slice(0, -1);
+            doc.text(line, x, y + size * 0.82);
+            y += lineH;
+            atColTop = false;
+          }
+
+          y += bm[b.type] || 0;
+        }
+
+        function drawList(b) {
+          const indent = 11;
+          const size = fs.li;
+          b.items.forEach((item, idx) => {
+            if (!atColTop) y += (idx === 0 ? tm.ul : tm.li);
+            const prefix = b.type === 'ul' ? '•' : `${idx + 1}.`;
+            // For ol with 2-digit numbers, give a tiny bit more space
+            const offset = b.type === 'ol' && idx >= 9 ? 0 : 2;
+            drawRichText(item, size, false, indent, { text: prefix, x: offset, bold: false });
+          });
+          y += bm.ul;
+        }
+
+        function drawTable(b) {
+          const allRows = [];
+          if (b.headers && b.headers.length) allRows.push({ cells: b.headers, header: true });
+          b.rows.forEach(r => allRows.push({ cells: r, header: false }));
+          if (!allRows.length) return;
+
+          const numCols = Math.max(...allRows.map(r => r.cells.length), 1);
+          const cellW = colW / numCols;
+          const tSize = Math.max(fs.p - 0.5, 8);
+          const padX = 4;
+          const padY = 3;
+          const lineH = tSize * 1.2;
+          const cellInnerW = cellW - 2 * padX;
+
+          if (!atColTop) y += tm.p;
+
+          for (const row of allRows) {
+            doc.setFontSize(tSize);
+            doc.setFont('helvetica', row.header ? 'bold' : 'normal');
+            // Strip inline ** markers since cell text isn't run through rich-text renderer
+            const wrapped = [];
+            for (let i = 0; i < numCols; i++) {
+              const cellText = (row.cells[i] || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1');
+              wrapped.push(doc.splitTextToSize(cellText, cellInnerW));
+            }
+            const maxLines = Math.max(1, ...wrapped.map(w => w.length));
+            const rowH = maxLines * lineH + 2 * padY;
+
+            ensureSpace(rowH);
+
+            // Header gets a subtle fill
+            if (row.header) {
+              doc.setFillColor(245, 240, 230);
+              doc.rect(x, y, colW, rowH, 'F');
+            }
+
+            // Borders: outer + vertical separators
+            doc.setDrawColor(170, 165, 155);
+            doc.setLineWidth(0.4);
+            doc.rect(x, y, colW, rowH);
+            for (let i = 1; i < numCols; i++) {
+              const sx = x + i * cellW;
+              doc.line(sx, y, sx, y + rowH);
+            }
+
+            // Cell text
+            for (let i = 0; i < numCols; i++) {
+              const cellX = x + i * cellW;
+              doc.setFont('helvetica', row.header ? 'bold' : 'normal');
+              doc.setFontSize(tSize);
+              doc.setTextColor(28, 24, 20);
+              (wrapped[i] || []).forEach((line, li) => {
+                const lineY = y + padY + (li * lineH) + tSize * 0.8;
+                doc.text(line, cellX + padX, lineY);
+              });
+            }
+
+            y += rowH;
+            atColTop = false;
+          }
+
+          y += bm.p;
+        }
+
+        // Render all blocks
+        for (const b of blocks) {
+          if (b.type === 'ul' || b.type === 'ol') drawList(b);
+          else if (b.type === 'table') drawTable(b);
+          else drawBlock(b);
+        }
+
+        // Output: doc.save() handles both Android (download) and iOS (open in new tab)
+        const stamp = new Date().toISOString().slice(0, 10);
+        const filename = `notes-${stamp}.pdf`;
+        doc.save(filename);
+
+        showStatus(`Saved as ${filename}`, 'success');
+      }
+
+      function showStatus(msg, kind, duration) {
+        duration = duration || 4500;
+        status.textContent = msg;
+        status.className = 'status ' + (kind || '');
+        clearTimeout(showStatus._t);
+        showStatus._t = setTimeout(() => {
+          status.textContent = '';
+          status.className = 'status';
+        }, duration);
+      }
+
+      makeBtn.addEventListener('click', () => {
+        makeBtn.disabled = true;
+        makeBtn.textContent = 'Generating...';
+        // Defer slightly so the disabled state paints before sync PDF work
+        setTimeout(() => {
+          try {
+            generatePDF();
+          } catch (err) {
+            console.error(err);
+            showStatus('Error: ' + (err.message || 'something went wrong'), 'error');
+          } finally {
+            makeBtn.disabled = false;
+            // Rebuild button content
+            makeBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg> Make PDF';
+          }
+        }, 30);
+      });
+
+      // Initial stats
+      updateStats();
+
+      // Allow Cmd/Ctrl+Enter to generate
+      input.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+          e.preventDefault();
+          makeBtn.click();
+        }
+      });
+    })();
+  </script>
 </body>
+
 </html>
